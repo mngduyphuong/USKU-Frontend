@@ -1,11 +1,11 @@
 # USKU Analytics
-USKU delivery service Australia || Vendor and client analytics platform
+```USKU delivery service Australia || Vendor and client analytics platform.```
 
+Participated in creating a Web service Interface and data analytics system in a team of 6 final year students. My role is the only Frontend Developer in the team. This repository is a shorted version of my Frontend works without databases and dynamic data.
 
 # Install dependencies
 
 #### installing npm dependencies
-*cmdline: cd to /frontend*
 
 ```$ npm install```
 
@@ -17,7 +17,7 @@ USKU delivery service Australia || Vendor and client analytics platform
 
 
 # To run frontend:
-### cmdline: nav to frontend
+
 *run as you go dev mode*
 
 ```$ npm run dev```
@@ -62,7 +62,18 @@ Quick fix with ``ctrl + . &`` add a ``prettier-ignore`` comment before any excep
 ```code --install-extension octref.vetur```
 ```code --install-extension jcbuisson.vue```
 
+# Tech Stacks
+- Vue.JS
+- Nuxt.JS
+- VueX
+- Axios
+- Vuetify
+- Bootsrap
+
 
 # Resources
 https://vuejs.org/ <br/>
+https://nuxtjs.org/ </br>
+https://github.com/axios/axios <br/>
+https://getbootstrap.com/ <br/>
 https://vuetifyjs.com/en/ <br/>
