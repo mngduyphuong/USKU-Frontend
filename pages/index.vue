@@ -71,7 +71,42 @@ export default {
       title: 'USKU Analytics || Home'
     }
   },
-
+  data() {
+    return {
+      pricing: [
+        {
+          name: 'test',
+          subname: 'test item description',
+          price: 10,
+          description: 'Lorem ipsum dolor sit.',
+          description1: 'Lorem ipsum dolor sit.',
+          description2: 'Lorem ipsum dolor sit.',
+          description3:
+            'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+        },
+        {
+          name: 'test01',
+          subname: 'test item description',
+          price: 20,
+          description: 'Lorem ipsum dolor sit.',
+          description1: 'Lorem ipsum dolor sit.',
+          description2: 'Lorem ipsum dolor sit.',
+          description3:
+            'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+        },
+        {
+          name: 'test02',
+          subname: 'test item description',
+          price: 350,
+          description: 'Lorem ipsum dolor sit.',
+          description1: 'Lorem ipsum dolor sit.',
+          description2: 'Lorem ipsum dolor sit.',
+          description3:
+            'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+        }
+      ]
+    }
+  },
   methods: {
     // ...mapActions({
     //   initDashboardData: 'dashboard/initDashboardData'
@@ -87,15 +122,13 @@ export default {
     let yourScript = document.createElement('script')
     yourScript.setAttribute('src', 'https://kit.fontawesome.com/b99e675b6e.js')
     document.head.appendChild(yourScript)
-    this.$store.dispatch('pricing/loadPricings')
-
-    // this.initDashboardData()
+    // this.$store.dispatch('pricing/loadPricings')
   },
 
   computed: {
-    ...mapState({
-      pricing: (state) => state.pricing.pricings.pricing
-    })
+    // ...mapState({
+    //   pricing: (state) => state.pricing.pricings.pricing
+    // })
   }
 }
 </script>
