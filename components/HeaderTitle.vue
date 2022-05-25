@@ -118,7 +118,8 @@ export default {
     isSuperuser() {
       // *  kinda overkill, quick workaround as computed doesn't work properly regarding cookies
       // ?  should've return a promise to wrap up, will be updated later
-      if (this.$store.state.account.accountInfo.isSuperuser) {
+      if (this.$store.state.auth.authStatus === 'authenticated') {
+        //database not available so if logged in enable to use superuser function
         return true
       } else {
         if (this.$cookies.get('uskuIsSuperuser')) {

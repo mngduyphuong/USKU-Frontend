@@ -26,47 +26,49 @@ export const mutations = {
 const Swal = require('sweetalert2')
 export const actions = {
   login({ commit, dispatch }, payload) {
+    commit('authenticateUser')
+    // this.$cookies.set('uskuIsSuperuser')
+    Swal.fire('', 'Welcome back, ' + `${payload.username}`, 'success').then(
+      (result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.$router.push('/')
+        }
+      }
+    )
     // *  login to backend with payload data (username & password from login page)
     // console.log(payload)
-    this.$axios
-      .$post('login/', payload)
-      .then((respData) => {
-        commit('authenticateUser')
+    // this.$axios
+    //   // .$post('login/', payload)
+    //   .then((respData) => {
+    //     commit('authenticateUser')
 
-        // *  get account info when logged in
-        dispatch('account/getCurrentAccountInfo', null, { root: true })
+    //     // *  get account info when logged in
+    //     dispatch('account/getCurrentAccountInfo', null, { root: true })
 
-        // *  set received tokens to browser cookies
-        this.$cookies.set('accessToken', respData.access)
-        this.$cookies.set('refreshToken', respData.refresh)
+    //     // *  set received tokens to browser cookies
+    //     this.$cookies.set('accessToken', respData.access)
+    //     this.$cookies.set('refreshToken', respData.refresh)
 
-        // *  set access token to request header
-        this.$authorizedAPI.setToken(respData.access, 'Bearer')
+    //     // *  set access token to request header
+    //     this.$authorizedAPI.setToken(respData.access, 'Bearer')
 
-        // !  set wrong access token, used for testing refreshing token, be deleted later
-        // this.$authorizedAPI.setToken(respData.access.concat('abc'), 'Bearer')
-      })
-      .then(() => {
-        // *  redirect to home, will be changed later
+    //     // !  set wrong access token, used for testing refreshing token, be deleted later
+    //     // this.$authorizedAPI.setToken(respData.access.concat('abc'), 'Bearer')
+    //   })
+    //   .then(() => {
+    //     // *  redirect to home, will be changed later
 
-        Swal.fire('', 'Welcome back, ' + `${payload.username}`, 'success').then(
-          (result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              this.$router.push('/')
-            }
-          }
-        )
-      })
-      .catch((error) => {
-        //alert(error.response.data.detail)
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: 'Please check your login details'
-        })
-      })
+    // })
+    //   .catch((error) => {
+    //     //alert(error.response.data.detail)
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Oops...',
+    //       text: 'Something went wrong!',
+    //       footer: 'Please check your login details'
+    //     })
+    //   })
   },
 
   async logout({ commit, dispatch }) {
@@ -85,34 +87,44 @@ export const actions = {
   },
 
   register({ commit, dispatch }, payload) {
-    this.$axios
-      // *  first register new user to backend
-      .$post('register/', payload)
-      // *  then login with registered username & password
-      .then((respData) => {
-        dispatch('login', {
-          username: payload.username,
-          password: payload.password
-        })
-      })
-      // !  as there aren't much rules created, the only registering error atm is password & not unique username
-      // !  password validating are currently handled by backend
-      // * will be updated & modularized later
-      .catch((error) => {
-        if (error.response.data.password) {
-          // *  handle password related errors
-          alert(error.response.data.password.join('\r\n'))
-        } else if (error.response.data.username) {
-          // *  handle username related errors
-          alert('Another user has been created with this Username!')
-        } else if (error.response.data.email) {
-          // *  handle email related errors
-          alert('Another user has been created with this Email!')
-        } else {
-          // *  handle unexpected errors
-          alert(error)
+    commit('authenticateUser')
+    // this.$cookies.set('uskuIsSuperuser')
+    Swal.fire('', 'Succesfully registered ' + `${payload.username}`).then(
+      (result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.$router.push('/')
         }
-      })
+      }
+    )
+    // this.$axios
+    //   // *  first register new user to backend
+    //   .$post('register/', payload)
+    //   // *  then login with registered username & password
+    //   .then((respData) => {
+    //     dispatch('login', {
+    //       username: payload.username,
+    //       password: payload.password
+    //     })
+    //   })
+    //   // !  as there aren't much rules created, the only registering error atm is password & not unique username
+    //   // !  password validating are currently handled by backend
+    //   // * will be updated & modularized later
+    //   .catch((error) => {
+    //     if (error.response.data.password) {
+    //       // *  handle password related errors
+    //       alert(error.response.data.password.join('\r\n'))
+    //     } else if (error.response.data.username) {
+    //       // *  handle username related errors
+    //       alert('Another user has been created with this Username!')
+    //     } else if (error.response.data.email) {
+    //       // *  handle email related errors
+    //       alert('Another user has been created with this Email!')
+    //     } else {
+    //       // *  handle unexpected errors
+    //       alert(error)
+    //     }
+    //   })
   },
 
   // *  random api call function to test if authorized requests work
