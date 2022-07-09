@@ -12,7 +12,7 @@
             <li class="mainMenu">
               <nuxt-link to="/"> Home</nuxt-link>
             </li>
-            <li v-if="isSuperuser" class="mainMenu">
+            <li class="mainMenu">
               <nuxt-link to="/report"> Dashboards</nuxt-link>
             </li>
             <li class="mainMenu">

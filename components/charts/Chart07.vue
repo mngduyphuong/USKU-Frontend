@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div v-if="!loading" class="row">
-      <div class="col-md">
-        <v-chart class="chart" :option="option" autoresize />
-      </div>
-    </div>
-
-    <div
-      v-else
-      class="d-flex justify-content-center align-items-center chart"
-      style="margin: auto"
-    >
-      <div class="spinner-border text-warning" role="status"></div>
-    </div>
+    <v-chart class="chart" :option="option" />
   </div>
 </template>
 
@@ -26,7 +14,6 @@ import {
   LegendComponent
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-
 use([
   CanvasRenderer,
   PieChart,
@@ -34,16 +21,13 @@ use([
   TooltipComponent,
   LegendComponent
 ])
-
 export default {
   name: 'HelloWorld',
   components: {
     VChart
   },
-
   data() {
     return {
-      loading: true,
       option: {
         // color: ['#118dff', '#12239e', '#e66c37', '#6b007b', '#e044a7'],
         color: [
@@ -55,7 +39,7 @@ export default {
           '#3257a8'
         ],
         title: {
-          text: this.dataProps[0],
+          text: 'Count of customer key by occupation',
           left: 'center'
         },
         tooltip: {
@@ -70,9 +54,16 @@ export default {
           {
             name: 'Customer keys',
             type: 'pie',
-            radius: ['40%', '70%'],
-            center: ['50%', '60%'],
-            data: [],
+            radius: '70%',
+            center: ['50%', '50%'],
+            data: [
+              { value: 9, name: 'Bachelors' },
+              { value: 8, name: 'Graduate Degree' },
+              { value: 6, name: 'High School' },
+              { value: 4, name: 'Master' },
+              { value: 2, name: 'Partial College' },
+              { value: 2, name: 'Partial High School' }
+            ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -83,36 +74,6 @@ export default {
           }
         ]
       }
-    }
-  },
-  created() {
-    this.initData()
-  },
-
-  props: {
-    dataProps: {
-      type: Array,
-      default: () => []
-    }
-  },
-
-  methods: {
-    initData() {
-      this.loading = true
-      this.getCustomersByOccupationData()
-      // this.getCustomersByEducationData()
-    },
-    getCustomersByOccupationData() {
-      // TODO reformat with the use of Vuex actions
-      this.$axios
-        .$get('api/customers_by_occupation/')
-        .then((response) => {
-          // console.log(response.data)
-          this.option.series[0].data = response.data
-          // commit('updateCustomersByOccupationData', response.data)
-          this.loading = false
-        })
-        .catch(alert)
     }
   }
 }

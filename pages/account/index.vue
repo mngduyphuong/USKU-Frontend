@@ -166,16 +166,6 @@ export default {
     })
   },
 
-  async created() {
-    // ?  if the logged account info data is not initialised, its isSuperuser field will be null
-    if (this.$store.getters['account/accountInfo'].isSuperuser == null) {
-      // *  get current account info from backend if not mapped in Vuex store
-      await this.initAccountInfo()
-    }
-    // *  map account info using data initialised in Vuex store module
-    this.accountInfo = this.$store.getters['account/accountInfo']
-  },
-
   data() {
     return {
       accountInfo: {}

@@ -1,17 +1,6 @@
 <template>
   <div>
-    <div v-if="!loading" class="row">
-      <div class="col-md">
-        <v-chart class="chart" :option="option" />
-      </div>
-    </div>
-    <div
-      v-else
-      class="d-flex justify-content-center align-items-center chart"
-      style="margin: auto"
-    >
-      <div class="spinner-border text-warning" role="status"></div>
-    </div>
+    <v-chart class="chart" :option="option" />
   </div>
 </template>
 
@@ -25,10 +14,8 @@ import {
   LegendComponent
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-
 // eslint-disable-next-line no-unused-vars
 import { mapMutations, mapState, mapActions, mapGetters } from 'vuex'
-
 use([
   CanvasRenderer,
   PieChart,
@@ -36,19 +23,23 @@ use([
   TooltipComponent,
   LegendComponent
 ])
-
 export default {
   name: 'HelloWorld',
   components: {
     VChart
   },
+  methods: {
+    ...mapActions({
+      getChart1Data: 'dashboard/getSalesByCountryData'
+    })
+  },
 
   data() {
     return {
-      loading: true,
+      chart1Data: {},
       option: {
         title: {
-          text: 'Total Orders by Geography',
+          text: 'Total orders by geography',
           left: 'center'
         },
         tooltip: {
@@ -65,7 +56,15 @@ export default {
             type: 'pie',
             radius: '70%',
             center: ['50%', '50%'],
-            data: [],
+            data: [
+              { value: 132, name: 'New South Wales' },
+              { value: 67, name: 'Queensland' },
+              { value: 95, name: 'South Australia' },
+              { value: 48, name: 'Tasmania' },
+              { value: 41, name: 'Victoria' },
+              { value: 200, name: 'International' }
+            ],
+            // data: this.chart1Data,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -76,36 +75,6 @@ export default {
           }
         ]
       }
-    }
-  },
-  created() {
-    this.initData()
-  },
-
-  props: {
-    dataProps: {
-      type: Array,
-      default: () => []
-    }
-  },
-
-  methods: {
-    initData() {
-      this.loading = true
-      this.getSalesByCountryData()
-    },
-    getSalesByCountryData() {
-      // TODO reformat with the use of Vuex actions
-      this.$axios
-        .$get('api/sales_by_country/')
-        .then((response) => {
-          // commit('updateOrdersByCountryData', response.totalorder)
-          // commit('updateSalesAmountByCountryData', response.totalamount)
-          // console.log(response)
-          this.option.series[0].data = response.totalorder
-          this.loading = false
-        })
-        .catch(alert)
     }
   }
 }

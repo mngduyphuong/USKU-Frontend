@@ -211,8 +211,8 @@ export default {
         shippingType = 1
       }
 
-      localStorage.setItem('address', this.address);
-      localStorage.setItem('name', this.name);
+      localStorage.setItem('address', this.address)
+      localStorage.setItem('name', this.name)
 
       // *  POST data in api accepted format
       let payload = {
@@ -229,15 +229,7 @@ export default {
         receivers_name: this.receiverName,
         receivers_address: this.receiverAddress
       }
-
-      // *  if create new order successfully, navigate to order-success page
-      this.$authorizedAPI
-        .post('/api/create_new_order/', payload)
-        .then((res) => console.info(res))
-        .then(() => {
-          this.$router.push('/order-success')
-        })
-        .catch(alert)
+      this.$router.push('/order-success')
     }
   },
 

@@ -1,7 +1,21 @@
 <template>
   <div>
     <div v-if="!loading" class="row">
-      <div class="col-md">
+      <div class="col-md-4" style="text-align: right; margin: auto">
+        <p>
+          Total number of orders today:
+          <span style="color: var(--UskuYellow)">{{ dataProps[0] }}</span>
+        </p>
+        <p>
+          Delivered order:
+          <span style="color: var(--UskuYellow)">{{ dataProps[1] }}</span>
+        </p>
+        <p>
+          Succes rate:
+          <span style="color: var(--UskuYellow)">{{ dataProps[2] }}%</span>
+        </p>
+      </div>
+      <div class="col-md-8">
         <v-chart class="chart" :option="option" autoresize />
       </div>
     </div>
@@ -27,7 +41,6 @@ import {
   GridComponent
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-
 use([
   CanvasRenderer,
   BarChart,
@@ -36,7 +49,6 @@ use([
   LegendComponent,
   GridComponent
 ])
-
 export default {
   name: 'HelloWorld',
   components: {
@@ -55,7 +67,7 @@ export default {
           }
         },
         legend: {
-          data: ['Free', 'Premium', 'Pro']
+          data: ['Total Orders', 'Delivered Orders', 'On Hold']
         },
         grid: {
           top: '10%',
@@ -69,7 +81,24 @@ export default {
         yAxis: {
           type: 'category',
           data: ['USKU orders']
-        }
+        },
+        series: [
+          {
+            name: 'Total Orders',
+            type: 'bar',
+            data: [this.dataProps[0]]
+          },
+          {
+            name: 'Delivered Orders',
+            type: 'bar',
+            data: [this.dataProps[1]]
+          },
+          {
+            name: 'On Hold',
+            type: 'bar',
+            data: [this.dataProps[2]]
+          }
+        ]
       }
     }
   },
@@ -82,51 +111,9 @@ export default {
       default: () => []
     }
   },
-  // watch: {
-  //   dataProps: function (newVal, oldVal) {
-  //     console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-  //   }
-  // },
   methods: {
-    async initData() {
-      this.loading = true
-      await this.getOrdersByTierData()
-      // console.log('loading')
-
-      // if (this.dataProps.length > 0) this.loading = false
-    },
-    async getOrdersByTierData() {
-      // TODO reformat with the use of Vuex actions
-      this.$axios
-        .$get('api/orders_by_tier/')
-        .then((response) => {
-          // * response data contain 3 json object
-          let processedData = []
-          processedData.push(response.data[0].total)
-          processedData.push(response.data[1].total)
-          processedData.push(response.data[2].total)
-          this.dataTable = processedData
-          this.option.series = [
-            {
-              name: 'Free',
-              type: 'bar',
-              data: [this.dataTable[0]]
-            },
-            {
-              name: 'Premium',
-              type: 'bar',
-              data: [this.dataTable[1]]
-            },
-            {
-              name: 'Pro',
-              type: 'bar',
-              data: [this.dataTable[2]]
-            }
-          ]
-          console.log('finish')
-          this.loading = false
-        })
-        .catch(alert)
+    initData() {
+      if (this.dataProps) this.loading = false
     }
   }
 }

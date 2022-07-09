@@ -1,17 +1,7 @@
 <template>
-  <div>
-    <div v-if="!loading" class="row">
-      <div class="col-md">
-        <v-chart class="chart" :option="option" autoresize />
-      </div>
-    </div>
-
-    <div
-      v-else
-      class="d-flex justify-content-center align-items-center chart"
-      style="margin: auto"
-    >
-      <div class="spinner-border text-warning" role="status"></div>
+  <div class="container">
+    <div class="row">
+      <v-chart class="chart" :option="option" autoresize />
     </div>
   </div>
 </template>
@@ -27,7 +17,6 @@ import {
   GridComponent
 } from 'echarts/components'
 import VChart from 'vue-echarts'
-
 use([
   CanvasRenderer,
   BarChart,
@@ -36,20 +25,17 @@ use([
   LegendComponent,
   GridComponent
 ])
-
 export default {
   name: 'HelloWorld',
   components: {
     VChart
   },
-
   data() {
     return {
-      loading: true,
       option: {
         color: ['#c9e7dc', '#92d0b9', '#59937e'],
         title: {
-          text: 'Revenue from Shipping Costs by Cluster and Shipping Type',
+          text: 'Revenue from shipping costs by cluster and shipping type',
           left: 'center'
         },
         tooltip: {
@@ -62,7 +48,7 @@ export default {
           }
         },
         legend: {
-          data: ['Type 1', 'Type 2', 'Type 3'],
+          data: ['Shipping type 1', 'Shipping type 2', 'Shipping type 3'],
           bottom: 'bottom'
         },
         grid: {
@@ -72,12 +58,12 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: 'Revenues',
+          name: 'Orders',
           min: 0,
-          max: 36000,
-          interval: 12000,
+          max: 20,
+          interval: 5,
           axisLabel: {
-            formatter: '${value}'
+            formatter: '{value}K'
           }
         },
         xAxis: {
@@ -89,73 +75,22 @@ export default {
         },
         series: [
           {
-            name: 'Type 1',
+            name: 'Shipping type 1',
             type: 'bar',
-            data: []
+            data: [17.5, 13, 13, 13]
           },
           {
-            name: 'Type 2',
+            name: 'Shipping type 2',
             type: 'bar',
-            data: []
+            data: [13, 13, 13, 13]
           },
           {
-            name: 'Type 3',
+            name: 'Shipping type 3',
             type: 'bar',
-            data: []
+            data: [15.5, 13, 13, 13]
           }
         ]
       }
-    }
-  },
-  created() {
-    this.initData()
-  },
-
-  props: {
-    dataProps: {
-      type: Array,
-      default: () => []
-    }
-  },
-
-  methods: {
-    initData() {
-      this.loading = true
-      this.getShippingRevByClustersData()
-    },
-    getShippingRevByClustersData() {
-      // TODO reformat with the use of Vuex actions
-      this.$axios
-        .$get('api/shipping_rev_by_clusters/')
-        .then((response) => {
-          let type1Rev = []
-          type1Rev.push(response.data.marriedmale[0].sum)
-          type1Rev.push(response.data.singlefemale[0].sum)
-          type1Rev.push(response.data.marriedfemale[0].sum)
-          type1Rev.push(response.data.singlemale[0].sum)
-
-          let type2Rev = []
-          type2Rev.push(response.data.marriedmale[1].sum)
-          type2Rev.push(response.data.singlefemale[1].sum)
-          type2Rev.push(response.data.marriedfemale[1].sum)
-          type2Rev.push(response.data.singlemale[1].sum)
-
-          let type3Rev = []
-          type3Rev.push(response.data.marriedmale[2].sum)
-          type3Rev.push(response.data.singlefemale[2].sum)
-          type3Rev.push(response.data.marriedfemale[2].sum)
-          type3Rev.push(response.data.singlemale[2].sum)
-
-          // let processedData = []
-          // processedData.push(type1Rev)
-          // processedData.push(type2Rev)
-          // processedData.push(type3Rev)
-          this.option.series[0].data = type1Rev
-          this.option.series[1].data = type2Rev
-          this.option.series[2].data = type3Rev
-          this.loading = false
-        })
-        .catch(alert)
     }
   }
 }

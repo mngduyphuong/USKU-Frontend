@@ -15,7 +15,6 @@ import {
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 import 'echarts/lib/component/toolbox'
-
 use([
   CanvasRenderer,
   BarChart,
@@ -24,13 +23,11 @@ use([
   TooltipComponent,
   LegendComponent
 ])
-
 export default {
   name: 'HelloWorld',
   components: {
     VChart
   },
-
   data() {
     return {
       option: {

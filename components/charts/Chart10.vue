@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div v-if="!loading" class="row">
-      <div class="col-md">
-        <v-chart class="chart" :option="option" autoresize />
-      </div>
-    </div>
-
-    <div
-      v-else
-      class="d-flex justify-content-center align-items-center chart"
-      style="margin: auto"
-    >
-      <div class="spinner-border text-warning" role="status"></div>
-    </div>
+    <v-chart class="chart" :option="option" autoresize />
   </div>
 </template>
 
@@ -27,7 +15,6 @@ import {
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 import 'echarts/lib/component/toolbox'
-
 use([
   CanvasRenderer,
   BarChart,
@@ -36,16 +23,13 @@ use([
   TooltipComponent,
   LegendComponent
 ])
-
 export default {
   name: 'HelloWorld',
   components: {
     VChart
   },
-
   data() {
     return {
-      loading: true,
       option: {
         color: ['#414fb1', '#9ec3e5'],
         tooltip: {
@@ -55,7 +39,7 @@ export default {
           }
         },
         title: {
-          text: 'Count of Customer Key by Sales Territory Key',
+          text: 'Count of customerkey by salesterritorykey',
           left: 'center'
         },
         // legend: {},
@@ -68,92 +52,42 @@ export default {
         xAxis: [
           {
             type: 'category',
-            // data: this.dataProps[0]
-            data: []
+            data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           }
         ],
         yAxis: [
           {
             type: 'value',
-            name: 'Count of Customer',
+            name: 'Customer keys',
             min: 0,
-            max: 5000,
-            interval: 1000,
+            max: 5,
+            interval: 1,
             axisLabel: {
-              formatter: '{value}'
+              formatter: '{value}K'
             }
           }
         ],
         series: [
           {
-            name: 'Male',
+            name: 'Direct',
             type: 'bar',
             stack: 'abc',
             emphasis: {
               focus: 'series'
             },
-            data: []
+            data: [0, 1, 0.5, 0.5, 1.5, 0.5, 0.5, 1, 1, 1, 1.5, 0.5]
           },
           {
-            name: 'Female',
+            name: 'Email',
             type: 'bar',
             stack: 'abc',
             emphasis: {
               focus: 'series'
             },
-            data: []
+            data: [0, 2, 0, 0, 3, 0, 0.6, 2, 2.3, 2.4, 2, 1.5]
           }
         ]
       }
-    }
-  },
-  created() {
-    this.initData()
-  },
-
-  props: {
-    dataProps: {
-      type: Array,
-      default: () => []
-    }
-  },
-
-  methods: {
-    initData() {
-      this.loading = true
-      this.getCustomersBySalesTerritoryData()
-    },
-    getCustomersBySalesTerritoryData() {
-      // TODO reformat with the use of Vuex actions
-      this.$axios
-        .$get('api/customer_by_sales_territory/')
-        .then((response) => {
-          console.log(response)
-          let processedData = []
-          let salesTerritoryKeys = []
-          // * sales territory key list of male is the same as female's
-          response.data.male.forEach((element) => {
-            salesTerritoryKeys.push(element.salesterritoryregion)
-          })
-          processedData.push(salesTerritoryKeys)
-
-          let maleData = []
-          response.data.male.forEach((element) => {
-            maleData.push(element.value)
-          })
-          processedData.push(maleData)
-
-          let femaleData = []
-          response.data.female.forEach((element) => {
-            femaleData.push(element.value)
-          })
-          processedData.push(femaleData)
-          this.option.series[1].data = femaleData
-          this.option.series[0].data = maleData
-          this.option.xAxis[0].data = salesTerritoryKeys
-          this.loading = false
-        })
-        .catch(alert)
     }
   }
 }

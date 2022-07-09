@@ -82,5 +82,12 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/echarts/, /zrender/]
+  },
+  target: 'static',
+  router: {
+    base: '/USKU-Frontend'
+  },
+  publicRuntimeConfig: {
+    BASE_URL: '/USKU-Frontend'
   }
 }
